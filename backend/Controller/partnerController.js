@@ -2,26 +2,6 @@ const DeliveryPartner = require('../Models/partnerSchema');
 const Order = require('../Models/orderSchema');
 const User = require('../Models/userSchema')
 
-// Assign Products to Delivery Partner
-const assignProducts = async (req, res) => {
-    try {
-        const { deliveryAgentId, productOrders } = req.body;
-
-        const newAssignment = new DeliveryPartner({
-            delivery_agent: deliveryAgentId,
-            products: productOrders.map(item => ({
-                product: item.productId,
-                order: item.orderId
-            }))
-        });
-        // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OTc1NGNkZmIyZDNhZDU1MjhjNTBkMCIsInJvbGUiOiJkZWxpdmVyeV9wYXJ0bmVyIiwiaWF0IjoxNzU0ODQ4ODUwLCJleHAiOjE3NTU0NTM2NTB9.CcFNQ7Y0CtbgEzDRq9WLpvEBjBidlxlEzV0T0WXnyek
-        await newAssignment.save();
-        res.status(201).json({ message: 'Products assigned to delivery partner', data: newAssignment });
-    } catch (err) {
-        res.status(500).json({ message: 'Error assigning products', error: err.message });
-    }
-};
-
 // Get All Pending Deliveries (for Delivery Partner)
 const getPendingDeliveries = async (req, res) => {
     try {
@@ -91,17 +71,9 @@ const updateDeliveryStatus = async (req, res) => {
         // 🔹 Emit socket event here
         const io = req.app.get('io');
         io.emit('deliveryStatusUpdated', {
-            delivery_agent: {
-                id: delivery.delivery_agent._id,
-                name: delivery.delivery_agent.username
-            },
-            product: {
-                id: updatedProductInfo.product._id,
-                name: updatedProductInfo.product.product_name,
-                status: updatedProductInfo.status,
-                quantity: updatedProductInfo.quantity
-            },
-            orderId
+            orderId,
+            productId: productId,
+            status: status
         });
 
         res.json({
@@ -123,42 +95,6 @@ const updateDeliveryStatus = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
-// const updateDeliveryStatus = async (req, res) => {
-//     try {
-//         const { orderId, productId, status } = req.body;
-//         const io = req.app.get('io');
-
-//         // 1️⃣ Update in Orders collection
-//         const order = await Order.findById(orderId);
-//         if (!order) return res.status(404).json({ message: "Order not found" });
-
-//         const product = order.products.id(productId);
-//         if (!product) return res.status(404).json({ message: "Product not found" });
-
-//         product.status = status;
-//         await order.save();
-
-//         // 2️⃣ Update in DeliveryPartner collection
-//         const deliveryPartner = await DeliveryPartner.findOne({ 'products.product': productId });
-//         if (deliveryPartner) {
-//             deliveryPartner.products = deliveryPartner.products.map(p =>
-//                 p.product.toString() === productId ? { ...p, status } : p
-//             );
-//             await deliveryPartner.save();
-//         }
-
-//         // 3️⃣ Emit socket event
-//         io.emit('deliveryStatusUpdated', {
-//             orderId,
-//             product: { id: productId, status }
-//         });
-
-//         res.json({ message: "Status updated successfully" });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: "Internal server error" });
-//     }
-// };
 
 const getDelivery = async (req, res) => {
     const { deliveryId } = req.body
@@ -174,4 +110,4 @@ const getDelivery = async (req, res) => {
     }
 }
 
-module.exports = { assignProducts, getPendingDeliveries, updateDeliveryStatus, getDelivery }
+module.exports = { getPendingDeliveries, updateDeliveryStatus, getDelivery }

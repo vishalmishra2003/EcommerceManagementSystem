@@ -28,27 +28,35 @@ export const MyTrack = () => {
         fetchOrders();
     }, [customerId]);
 
-    // Listen for live updates
     useEffect(() => {
         if (!socket) return;
 
-        socket.on("deliveryStatusUpdated", ({ orderId, product }) => {
-            setOrders(prevOrders =>
-                prevOrders.map(order => {
-                    if (order._id !== orderId) return order;
-                    return {
-                        ...order,
-                        products: order.products.map(p =>
-                            p._id === product.id || p.product?._id === product.id
-                                ? { ...p, status: product.status }
-                                : p
-                        )
-                    };
-                })
-            );
+        socket.on("deliveryStatusUpdated", ({ orderId, productId, status }) => {
+
+            setOrders((prevOrders) => {
+                const updatedOrders = prevOrders.map((order) => {
+
+                    if (order.orderId === orderId) {
+                        const updatedProducts = order.products.map((product) => {
+                            if (product.productId === productId) {
+                                return { ...product, status };
+                            }
+                            return product;
+                        });
+
+                        const updatedOrder = { ...order, products: updatedProducts };
+                        return updatedOrder;
+                    }
+
+                    return order;
+                });
+                return updatedOrders;
+            });
         });
 
-        return () => socket.off("deliveryStatusUpdated");
+        return () => {
+            socket.off("deliveryStatusUpdated");
+        };
     }, [socket]);
 
     return (
@@ -81,14 +89,14 @@ export const MyTrack = () => {
                                     <td>{p.quantity}</td>
                                     <td>
                                         <span
-                                            className={`badge ${p.status === "delivered"
+                                            className={`badge ${(p.status || p.product?.status) === "delivered"
                                                 ? "bg-success"
-                                                : p.status === "pending"
+                                                : (p.status || p.product?.status) === "pending"
                                                     ? "bg-info"
                                                     : "bg-warning"
                                                 }`}
                                         >
-                                            {p.status.toUpperCase()}
+                                            {(p.status || p.product?.status || "N/A").toUpperCase()}
                                         </span>
                                     </td>
                                 </tr>

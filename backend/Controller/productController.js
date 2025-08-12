@@ -139,14 +139,15 @@ const getMyOrder = async (req, res) => {
             return res.status(404).json({ message: "No orders found for this customer" });
         }
 
-        for (let order of orders) {
-            for (let product of order.products) {
-                console.log(product)
-            }
-        }
+        // for (let order of orders) {
+        //     for (let product of order.products) {
+        //         console.log(product)
+        //     }
+        // }
         const formattedOrders = orders.map(order => ({
             orderId: order._id,
             products: order.products.map(p => ({
+                productId: p.product._id,
                 product_name: p.product_name,
                 quantity: p.quantity,
                 status: p.status

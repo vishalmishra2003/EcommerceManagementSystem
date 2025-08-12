@@ -3,7 +3,7 @@ const route = express.Router()
 const auth = require('../Middleware/authMiddleware')
 const { createUser, loginUser, getSingleUser, getAllUser } = require('../Controller/userController')
 const { buyProduct, addProduct, getProduct, getSingleProduct, getOrder, getMyOrder } = require('../Controller/productController')
-const { assignProducts, getPendingDeliveries, updateDeliveryStatus, getDelivery } = require('../Controller/partnerController');
+const { getPendingDeliveries, updateDeliveryStatus, getDelivery } = require('../Controller/partnerController');
 
 // Public routes
 route.post('/register', createUser)
@@ -23,14 +23,10 @@ route.get('/getOrder', auth(['admin', 'delivery_partner']), getOrder)
 route.get('/getMyOrder/:id', auth(['customer']), getMyOrder)
 
 
-// Assign products to partner (Admin only)
-route.post('/assign', auth(['admin']), assignProducts);
-
 // Get pending deliveries (Delivery Partner only)
 route.get('/pending', auth(['delivery_partner']), getPendingDeliveries);
 
 // Update delivery status (Delivery Partner only)
-// route.put('/update_status', auth(['delivery_partner']), updateDeliveryStatus);
 route.patch('/update_status', auth(['delivery_partner']), updateDeliveryStatus);
 
 route.post('/getDelivery', auth(['delivery_partner']), getDelivery)

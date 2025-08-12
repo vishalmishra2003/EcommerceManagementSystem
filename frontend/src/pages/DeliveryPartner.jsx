@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import ConfirmationModal from '../Component/ConfirmationModal';
+import { SocketContext } from '../Context/SocketContext';
 
 export const DeliveryPartner = () => {
     const [data, setData] = useState([]);
@@ -9,11 +10,14 @@ export const DeliveryPartner = () => {
     const [showModal, setShowModal] = useState(false);
     const [pendingUpdate, setPendingUpdate] = useState(null);
 
+    const { socket } = useContext(SocketContext); // <-- only addition: socket from context
+
     const statusOptions = ['on_the_way', 'delivered', 'picked_up'];
     const deliveryId = JSON.parse(localStorage.getItem('userData')).id;
 
+    // default-safe formatter (prevents undefined / toUpperCase errors)
     const formatStatus = (status) =>
-        status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+        (status || 'pending').replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,7 +28,7 @@ export const DeliveryPartner = () => {
                     { withCredentials: true }
                 );
 
-                console.log("Response : ", res.data)
+                // console.log("Response : ", res.data)
                 if (res?.data?.products) {
                     const productList = res.data.products.map((item) => ({
                         orderId: item.order,
@@ -42,6 +46,54 @@ export const DeliveryPartner = () => {
         };
         fetchData();
     }, [deliveryId]);
+    useEffect(() => {
+        if (!socket) return;
+
+        const handler = (payload) => {
+            try {
+                const orderId =
+                    payload?.orderId ||
+                    payload?.order ||
+                    (payload?.order?._id && String(payload.order._id));
+
+                let productId =
+                    payload?.productId ||
+                    payload?.product?.id ||
+                    payload?.product?._id ||
+                    payload?.product?.product ||
+                    payload?.product;
+
+                const status =
+                    payload?.status ||
+                    payload?.product?.status ||
+                    (payload?.product && payload.product?.status);
+
+                if (!orderId || !productId) {
+                    return;
+                }
+
+                const orderIdStr = String(orderId);
+                const productIdStr = String(productId);
+
+                setData((prev) =>
+                    prev.map((item) => {
+                        if (String(item.orderId) === orderIdStr && String(item.productId) === productIdStr) {
+                            return { ...item, status };
+                        }
+                        return item;
+                    })
+                );
+            } catch (err) {
+                console.error('Error handling socket payload:', err);
+            }
+        };
+
+        socket.on('deliveryStatusUpdated', handler);
+
+        return () => {
+            socket.off('deliveryStatusUpdated', handler);
+        };
+    }, [socket]);
 
     const handleStatusClick = (orderId, productId) => {
         setEditingKey({ orderId, productId });
@@ -55,19 +107,21 @@ export const DeliveryPartner = () => {
     const confirmUpdate = async () => {
         if (!pendingUpdate) return;
 
-        console.log("Pending Update : ", pendingUpdate)
+        // console.log("Pending Update : ", pendingUpdate)
         const { orderId, productId, newStatus } = pendingUpdate;
 
         try {
+            // Update local UI immediately (optimistic)
             setData((prev) =>
                 prev.map((item) =>
-                    item.productId === productId && item.orderId === orderId
+                    String(item.productId) === String(productId) && String(item.orderId) === String(orderId)
                         ? { ...item, status: newStatus }
                         : item
                 )
             );
             setEditingKey(null);
 
+            // <-- KEEP YOUR ORIGINAL API CALL (unchanged)
             await axios.patch(
                 `${import.meta.env.VITE_API_URL}/update_status`,
                 {
@@ -78,8 +132,12 @@ export const DeliveryPartner = () => {
                 },
                 { withCredentials: true }
             );
+
+            // DO NOT emit from frontend here — your backend already emits the
+            // socket update after database update. We rely on that.
         } catch (error) {
             console.error('Error updating status:', error);
+            // optionally revert optimistic update or refetch if needed
         } finally {
             setShowModal(false);
             setPendingUpdate(null);
@@ -121,7 +179,7 @@ export const DeliveryPartner = () => {
                                     {isEditing ? (
                                         <select
                                             className="form-select"
-                                            value={item.status}
+                                            value={item.status || statusOptions[0]}
                                             onChange={(e) =>
                                                 handleStatusSelect(
                                                     item.orderId,

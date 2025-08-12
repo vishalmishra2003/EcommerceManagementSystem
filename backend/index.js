@@ -41,11 +41,11 @@ io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
 
     // Listen for delivery status updates from delivery partners
-    socket.on('updateDeliveryStatus', (data) => {
-        console.log("Delivery Status Update Received:", data);
-        // Broadcast update to all connected clients
-        io.emit('deliveryStatusUpdated', data);
-    });
+    // socket.on('updateDeliveryStatus', (data) => {
+    //     console.log("Delivery Status Update Received:", data);
+    //     // Broadcast update to all connected clients
+    //     io.emit('deliveryStatusUpdated', data);
+    // });
 
     socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);

@@ -8,7 +8,7 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         const newsocket = io(import.meta.env.VITE_API_URL, {
-            transports: ["websocket"], // ensure real-time
+            transports: ["websocket"],
             reconnection: true
         });
         setSocket(newsocket);
