@@ -1,50 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { SocketContext } from '../../Context/SocketContext';
 
 export const DeliveryStatus = () => {
-    const [products, setProducts] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const { socket } = useContext(SocketContext);
 
     const getStatusClass = (status) => {
         switch (status) {
             case 'delivered':
-                return 'bg-success'; // Green
+                return 'bg-success';
             case 'pending':
-                return 'bg-primary'; // Blue
+                return 'bg-primary';
             case 'picked_up':
-                return 'bg-warning'; // Yellow
+                return 'bg-warning';
             case 'on_the_way':
-                return 'bg-info'; // Light blue (or pick another)
+                return 'bg-info';
             default:
-                return 'bg-secondary'; // Gray fallback
+                return 'bg-secondary';
         }
     };
 
     useEffect(() => {
-        const fetchProduct = async () => {
+        const fetchOrders = async () => {
             try {
                 const token = JSON.parse(localStorage.getItem('userData'))?.token;
 
                 const res = await axios.get(`${import.meta.env.VITE_API_URL}/getOrder`, { withCredentials: true });
+                const ordersData = res.data;
 
-                const orders = res.data;
-                console.log(orders)
-
-                const allProducts = orders.flatMap(order =>
-                    order.products.map(p => ({
-                        name: p.product_name || p.product,
-                        status: p.status
-                    }))
-                );
-
-                setProducts(allProducts);
+                setOrders(ordersData);
             } catch (error) {
                 toast.error('Failed to fetch delivery status');
             }
         };
 
-        fetchProduct();
+        fetchOrders();
     }, []);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.on("deliveryStatusUpdated", ({ orderId, productId, status }) => {
+            setOrders((prevOrders) => {
+                return prevOrders.map(order => {
+                    if (order._id !== orderId) return order;
+
+                    const updatedProducts = order.products.map(product => {
+                        if (product.product === productId) {
+                            return { ...product, status };
+                        }
+                        return product;
+                    });
+
+                    return { ...order, products: updatedProducts };
+                });
+            });
+        });
+
+        return () => {
+            socket.off("deliveryStatusUpdated");
+        };
+    }, [socket]);
+
+    // Flatten all products for rendering (optional)
+    const allProducts = orders.flatMap(order =>
+        order.products.map(product => ({
+            orderId: order._id,
+            productId: product.product,
+            name: product.product_name || product.product,
+            status: product.status
+        }))
+    );
 
     return (
         <table className="table table-bordered">
@@ -56,8 +84,8 @@ export const DeliveryStatus = () => {
                 </tr>
             </thead>
             <tbody>
-                {products.map((item, index) => (
-                    <tr key={index}>
+                {allProducts.map((item, index) => (
+                    <tr key={`${item.orderId}-${item.productId}`}>
                         <td>{index + 1}</td>
                         <td>{item.name}</td>
                         <td className={`text-white text-center ${getStatusClass(item.status)}`}>
