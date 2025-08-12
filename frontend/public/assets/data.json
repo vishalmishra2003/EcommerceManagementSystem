@@ -1,0 +1,182 @@
+[
+    {
+        "username": "saraking",
+        "email": "cookrobin@gmail.com",
+        "password": "M^koW6lQ4T",
+        "role": "admin"
+    },
+    {
+        "username": "lindseyelizabeth",
+        "email": "brandonmorton@hotmail.com",
+        "password": "P1ghQ_Wo*V",
+        "role": "admin"
+    },
+    {
+        "username": "jacobdavis",
+        "email": "carrie62@hotmail.com",
+        "password": "^9IJb5Nf%R",
+        "role": "admin"
+    },
+    {
+        "username": "angeljames",
+        "email": "stacy19@gmail.com",
+        "password": "MQGyMhtL&4",
+        "role": "admin"
+    },
+    {
+        "username": "emilylee",
+        "email": "ashley06@velazquez-acosta.com",
+        "password": "_3hPb$#FdM",
+        "role": "admin"
+    },
+    {
+        "username": "torresmisty",
+        "email": "kelly06@pena.org",
+        "password": "&v#1DZot!N",
+        "role": "admin"
+    },
+    {
+        "username": "blairdebra",
+        "email": "roberto24@yahoo.com",
+        "password": "Xxz1yYs##3",
+        "role": "admin"
+    },
+    {
+        "username": "derekgeorge",
+        "email": "qwalls@yahoo.com",
+        "password": "76iyCPz+)c",
+        "role": "admin"
+    },
+    {
+        "username": "heatherrose",
+        "email": "heather04@walsh.com",
+        "password": "(6MCcf5kiY",
+        "role": "admin"
+    },
+    {
+        "username": "garyrogers",
+        "email": "martinchristopher@hanna-harrison.com",
+        "password": "+es3KHzsZO",
+        "role": "admin"
+    },
+    {
+        "username": "smithmargaret",
+        "email": "gregorybenitez@villarreal.org",
+        "password": "VE5tBlj9_!",
+        "role": "customer"
+    },
+    {
+        "username": "devans",
+        "email": "reyesreginald@gmail.com",
+        "password": "c)15aX5mh^",
+        "role": "customer"
+    },
+    {
+        "username": "erichunter",
+        "email": "littlepeter@short.info",
+        "password": "4%7_XqKi%p",
+        "role": "customer"
+    },
+    {
+        "username": "cunninghampaul",
+        "email": "christopher24@hotmail.com",
+        "password": ")aFgdX@lJ4",
+        "role": "customer"
+    },
+    {
+        "username": "ishelton",
+        "email": "kelseyconley@french-gonzalez.com",
+        "password": "u)kZ7IpR%e",
+        "role": "customer"
+    },
+    {
+        "username": "kristipetty",
+        "email": "zhangsherry@hotmail.com",
+        "password": "!zlRr@Ehw3",
+        "role": "customer"
+    },
+    {
+        "username": "bowenstephanie",
+        "email": "jprince@gordon-dunn.com",
+        "password": "6H5RW#po+)",
+        "role": "customer"
+    },
+    {
+        "username": "gomezphillip",
+        "email": "ortegateresa@yahoo.com",
+        "password": "p^P8eorjyT",
+        "role": "customer"
+    },
+    {
+        "username": "collinsjennifer",
+        "email": "qbrooks@kelly.com",
+        "password": "iuQK7EeY4(",
+        "role": "customer"
+    },
+    {
+        "username": "brandon09",
+        "email": "gkeller@gmail.com",
+        "password": "^EBHg&*gn5",
+        "role": "customer"
+    },
+    {
+        "username": "tbriggs",
+        "email": "joseblankenship@yahoo.com",
+        "password": "Pb*8X2avqX",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "desireehughes",
+        "email": "jonesjoseph@tucker.com",
+        "password": "7R57QRrA$@",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "jason21",
+        "email": "jturner@yahoo.com",
+        "password": "&KBcRUisV1",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "hayespaige",
+        "email": "pshort@yahoo.com",
+        "password": ")2GA!g_061",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "ashleywashington",
+        "email": "jonesvictoria@gmail.com",
+        "password": "ug7Rsiz*+@",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "patricia92",
+        "email": "torreskelly@price.com",
+        "password": "qUE2$@Wf&d",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "hdavis",
+        "email": "bushkathleen@simon-holt.com",
+        "password": "ps&^8JaX_i",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "millerangel",
+        "email": "pattersonryan@hotmail.com",
+        "password": "f%6*HNxg*u",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "warrensteven",
+        "email": "dominguezjohn@jones-parker.com",
+        "password": "NZlw37MzY^",
+        "role": "delivery_partner"
+    },
+    {
+        "username": "lauragregory",
+        "email": "leah44@miller.net",
+        "password": "!ZjwX7Aw_r",
+        "role": "delivery_partner"
+    }
+]

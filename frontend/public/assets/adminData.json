@@ -1,0 +1,44 @@
+{
+    "deliveryPartners": [
+        {
+            "id": 1,
+            "name": "John Doe",
+            "phone": "1234567890",
+            "area": "Delhi"
+        },
+        {
+            "id": 2,
+            "name": "Alice Smith",
+            "phone": "9876543210",
+            "area": "Mumbai"
+        }
+    ],
+    "customers": [
+        {
+            "id": 1,
+            "name": "Rahul",
+            "email": "rahul@mail.com",
+            "address": "Bangalore"
+        },
+        {
+            "id": 2,
+            "name": "Priya",
+            "email": "priya@mail.com",
+            "address": "Pune"
+        }
+    ],
+    "deliveryStatus": [
+        {
+            "product": "Shoes",
+            "status": "On the way"
+        },
+        {
+            "product": "Watch",
+            "status": "Delivered"
+        },
+        {
+            "product": "T-shirt",
+            "status": "Picked up"
+        }
+    ]
+}

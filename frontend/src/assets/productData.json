@@ -1,0 +1,25 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Wireless Mouse",
+            "description": "A smooth, responsive wireless mouse with ergonomic design and long battery life.",
+            "amount": 499,
+            "image": "/images/mouse.jpg"
+        },
+        {
+            "id": 2,
+            "name": "Bluetooth Speaker",
+            "description": "Compact and powerful speaker with crystal clear sound and deep bass.",
+            "amount": 1199,
+            "image": "/images/speaker.jpg"
+        },
+        {
+            "id": 3,
+            "name": "USB-C Charger",
+            "description": "Fast-charging USB-C charger with built-in surge protection.",
+            "amount": 699,
+            "image": "/images/charger.jpg"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "productName": "Wireless Mouse",
+        "status": "On the way"
+    },
+    {
+        "id": 2,
+        "productName": "Bluetooth Speaker",
+        "status": "Picked up"
+    },
+    {
+        "id": 3,
+        "productName": "USB-C Charger",
+        "status": "Delivered"
+    }
+]
