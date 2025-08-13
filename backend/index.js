@@ -20,6 +20,7 @@ app.use(cookieParser());
 app.use(route);
 
 // Database connection
+console.log(typeof process.env.DB)
 mongoose.connect(DB_URL)
     .then(() => console.log("DB Connected Successfully"))
     .catch((err) => console.log(err));
@@ -52,6 +53,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT || 4000 || '0.0.0.0', () => {
     console.log(`PORT is listening to ${process.env.PORT}`);
 });
