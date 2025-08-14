@@ -7,7 +7,7 @@ export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newsocket = io(import.meta.env.VITE_API_URL, {
+        const newsocket = io(import.meta.env.VITE_API_URL_SOCKET, {
             transports: ["websocket"],
             reconnection: true
         });
