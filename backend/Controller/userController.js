@@ -67,50 +67,6 @@ const createUser = async (req, res) => {
         res.status(500).json({ message: "Failed to Register User" });
     }
 };
-// const createUser = async (req, res) => {
-//     const { username, email, password, role } = req.body;
-
-//     try {
-//         const existingUser = await userSchema.findOne({ email });
-//         if (existingUser) {
-//             return res.status(409).json({ message: "User already exists" });
-//         }
-
-//         const hashedPassword = await bcrypt.hash(password, 12);
-
-//         const newUser = new userSchema({
-//             username,
-//             email,
-//             password: hashedPassword,
-//             role
-//         });
-
-//         await newUser.save();
-
-//         const token = generateToken(newUser);
-
-//         res.cookie('token', token, {
-//             httpOnly: true,
-//             secure: process.env.NODE_ENV === 'production',
-//             sameSite: 'strict',
-//             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-//         });
-
-//         if (role === 'delivery_partner') {
-//             const newPartner = new partnerSchema({ username, email, id })
-//             await newPartner.save()
-//         }
-
-//         res.status(201).json({
-//             message: "User Created Successfully",
-//             user: { id: newUser._id, username: newUser.username, role: newUser.role, token: token }
-//         });
-
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: "Failed to Register User" });
-//     }
-// };
 
 // LOGIN USER
 const loginUser = async (req, res) => {

@@ -30,11 +30,6 @@ const orderSchema = new mongoose.Schema({
             }
         }
     ],
-    // order_status: {
-    //     type: String,
-    //     enum: ['pending', 'on_the_way', 'delivered', 'picked_up'],
-    //     default: 'pending'
-    // },
     createdAt: {
         type: Date,
         default: Date.now
