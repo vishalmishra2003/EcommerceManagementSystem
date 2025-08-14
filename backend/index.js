@@ -20,7 +20,6 @@ app.use(cookieParser());
 app.use(route);
 
 // Database connection
-console.log(typeof process.env.DB)
 mongoose.connect(DB_URL)
     .then(() => console.log("DB Connected Successfully"))
     .catch((err) => console.log(err));
@@ -40,13 +39,6 @@ app.set('io', io);
 
 io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
-
-    // Listen for delivery status updates from delivery partners
-    // socket.on('updateDeliveryStatus', (data) => {
-    //     console.log("Delivery Status Update Received:", data);
-    //     // Broadcast update to all connected clients
-    //     io.emit('deliveryStatusUpdated', data);
-    // });
 
     socket.on('disconnect', () => {
         console.log(`User disconnected: ${socket.id}`);
