@@ -57,6 +57,7 @@ export const Login = () => {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, { email, password }, { withCredentials: true });
 
       toast.success('Login successful!');
+      alert("Success")
 
       localStorage.setItem('userData', JSON.stringify(res.data.user))
 
