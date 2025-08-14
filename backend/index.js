@@ -1,6 +1,4 @@
 require('dotenv').config();
-console.log("FRONTEND_URL from env:", process.env.FRONTEND_URL);
-console.log("PORT from env:", process.env.PORT);
 
 const express = require('express');
 const mongoose = require('mongoose');
